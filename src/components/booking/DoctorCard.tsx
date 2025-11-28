@@ -1,7 +1,7 @@
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Doctor } from "@/types";
-import { User, Clock, Calendar, IndianRupee } from "lucide-react";
+import { User, Clock, Calendar, IndianRupee, Award } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface DoctorCardProps {
@@ -21,8 +21,25 @@ export const DoctorCard = ({ doctor, isSelected, onSelect }: DoctorCardProps) =>
     >
       <div className="flex flex-col md:flex-row gap-6">
         <div className="flex-shrink-0">
-          <div className="w-24 h-24 rounded-full bg-primary/10 flex items-center justify-center">
-            <User className="h-12 w-12 text-primary" />
+          <div className="w-24 h-24 rounded-full overflow-hidden bg-primary/10 flex items-center justify-center">
+            {doctor.image ? (
+              <img 
+                src={doctor.image} 
+                alt={doctor.name}
+                className="w-full h-full object-cover"
+                onError={(e) => {
+                  // Fallback to icon if image fails to load
+                  e.currentTarget.style.display = 'none';
+                  e.currentTarget.parentElement!.innerHTML = `
+                    <svg class="h-12 w-12 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                    </svg>
+                  `;
+                }}
+              />
+            ) : (
+              <User className="h-12 w-12 text-primary" />
+            )}
           </div>
         </div>
 
@@ -31,9 +48,11 @@ export const DoctorCard = ({ doctor, isSelected, onSelect }: DoctorCardProps) =>
             <div>
               <h3 className="text-xl font-bold text-foreground mb-1">{doctor.name}</h3>
               <p className="text-primary font-medium mb-2">{doctor.specialization}</p>
-              <p className="text-sm text-muted-foreground mb-3">
-                {doctor.experience} years of experience
-              </p>
+              
+              <div className="flex items-center gap-2 text-sm text-muted-foreground mb-3">
+                <Award className="h-4 w-4 text-primary" />
+                <span>{doctor.experience} years of experience</span>
+              </div>
 
               <div className="space-y-2">
                 <div className="flex items-center gap-2 text-sm text-muted-foreground">

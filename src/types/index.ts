@@ -11,6 +11,7 @@ export interface Doctor {
   consultationFee: number;
   image?: string;
   recommendedFor: string[];
+
 }
 
 export interface PatientDetails {
